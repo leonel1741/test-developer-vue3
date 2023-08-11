@@ -41,7 +41,11 @@ const favoritesMovieList = useFavoritesStore();
   transform: scale(1.2);
 }
 .movies--list-container h1 {
+  transition: 0.2s all linear;
+  font-size: 2.2rem;
   text-align: center;
+  padding-bottom: 1.2rem;
+  font-weight: bold;
 }
 
 .card-container {
@@ -73,5 +77,11 @@ const favoritesMovieList = useFavoritesStore();
   padding: 10px;
   display: flex;
   gap: 0.7rem;
+}
+
+@media (min-width: 1024px) {
+  .movies--list-container h1 {
+    font-size: 3rem;
+  }
 }
 </style>
