@@ -30,16 +30,15 @@ const favoritesMovieList = useFavoritesStore();
   </div>
 </template>
 
-
 <style scoped>
 .movies--list-container {
   padding: 20px;
 }
 .btn-hover {
-    transition: 0.4s linear;
+  transition: 0.4s linear;
 }
 .btn-hover:hover {
-    transform: scale(1.2);
+  transform: scale(1.2);
 }
 .movies--list-container h1 {
   text-align: center;

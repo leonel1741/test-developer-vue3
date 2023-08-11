@@ -1,11 +1,10 @@
 <script setup>
 import axios from "axios";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { useFavoritesStore } from "../store/favorites";
 
-const movie = ref({});
+const movieDetail = ref({});
 const movieTitle = ref("");
-const isVisible = ref(false);
 const favoritesMovieList = useFavoritesStore();
 
 const fetch = () => {
@@ -15,7 +14,7 @@ const fetch = () => {
   axios
     .get(`https://www.omdbapi.com/?apikey=d008d647`, { params })
     .then((res) => {
-      movie.value = res.data;
+      movieDetail.value = res.data;
     })
     .catch((error) => {
       console.log(error);
@@ -25,6 +24,17 @@ const fetch = () => {
 const searchName = () => {
   fetch();
   movieTitle.value = "";
+};
+
+const checkMovie = (movieDetail) => {
+  const result = favoritesMovieList.favorites.find(
+    (movie) => movie.Title === movieDetail.Title
+  );
+  if (!result) {
+    favoritesMovieList.addMovie(movieDetail);
+  } else {
+    alert("La pelicula ya se agrego a favoritos");
+  }
 };
 </script>
 
@@ -46,18 +56,26 @@ const searchName = () => {
     <router-link to="/favorites" class="mt-3 favorites-btn">
       <button class="btn btn-danger m-2 btn-hover">Favorites Movies</button>
     </router-link>
-    <ul class="list-group movies--list-container" v-if="movie.Title">
+    <ul class="list-group movies--list-container" v-if="movieDetail.Title">
       <li class="list-group-item img-container">
-        <img class="image--card-home" :src="movie.Poster" :alt="movie.Title" />
+        <img
+          class="image--card-home"
+          :src="movieDetail.Poster"
+          :alt="movieDetail.Title"
+        />
       </li>
-      <li class="list-group-item"><b>Title: </b>{{ movie.Title }}</li>
-      <li class="list-group-item"><b>Released: </b>{{ movie.Released }}</li>
-      <li class="list-group-item"><b>Director: </b>{{ movie.Director }}</li>
-      <li class="list-group-item"><b>Actors: </b>{{ movie.Actors }}</li>
+      <li class="list-group-item"><b>Title: </b>{{ movieDetail.Title }}</li>
+      <li class="list-group-item">
+        <b>movieDetail: </b>{{ movieDetail.Released }}
+      </li>
+      <li class="list-group-item">
+        <b>Director: </b>{{ movieDetail.Director }}
+      </li>
+      <li class="list-group-item"><b>Actors: </b>{{ movieDetail.Actors }}</li>
       <li class="list-group-item btn-container">
         <button
           class="btn btn-primary btn-hover"
-          @click="favoritesMovieList.addMovie(movie)"
+          @click="checkMovie(movieDetail)"
         >
           Save Movie
         </button>
